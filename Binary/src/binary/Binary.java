@@ -37,7 +37,7 @@ public class Binary {
 	{
 		
 		checkIfDecimal(i);
-		//sends string to check to see if there is a decimal point
+		///sends string to check to see if there is a decimal point
 		
 		isNegative(numbersBeforeDecimalPoint);
 		//checks to see if the number is negative

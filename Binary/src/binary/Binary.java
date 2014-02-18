@@ -35,7 +35,8 @@ public class Binary {
 	
 	private static void d2B(String i)
 	{
-		
+		checkIfInfinity(i);
+		checkIfNAN(i);
 		checkIfDecimal(i);
 		///sends string to check to see if there is a decimal point
 		
@@ -46,6 +47,26 @@ public class Binary {
 				 //calls method to add stacks
 				//calls method to set exponents
 		printFinalStack();//print significand
+		System.out.println("Single Precision :)");
+		
+	}
+	
+	public static void checkIfNAN(String i)
+	{
+		if(i.equalsIgnoreCase("nan"))
+		{
+			System.out.println("0/1|11111111|any nonzero significand");
+			System.exit(0);
+		}
+	}
+	
+	public static void checkIfInfinity(String i)
+	{
+		if(i.equalsIgnoreCase("Infinity"))
+		{
+			System.out.println("0/1|11111111|00000000000000000000000");
+			System.exit(0);
+		}
 	}
 	
 	private static void checkIfZero(String i)
@@ -197,7 +218,8 @@ public class Binary {
 		s = Integer.toBinaryString(exponent+127);
 		if(s.length()<8)
 		{
-			printExponent("0"+s);
+			s="0"+s;
+			printExponent(s);
 		}
 		else
 		{

@@ -12,21 +12,39 @@ public class Binary {
 	private static int whereIsDecimal=0;
 	private static boolean doNotDoBinary1 = false;
 	private static boolean doNotDoBinary2 = false;
+	private static boolean doublePrecision = false;
 	
 	public static void main(String[] args) 
 	{
 		Scanner keyboard = new Scanner( System.in ); 
-		System.out.println("If you want to convert from DECIMAL to BINARY, enter 0.\n"
-				+"If you want to convert from BINARY to DECIMAL, enter 1.");
+		System.out.println("If you want to convert from DECIMAL to BINARY(Single), enter 0.\n"
+				+"If you want to convert from BINARY(Single) to DECIMAL, enter 1.\n"+
+				"If you want to convert from DECIMAL to BINARY(Double) enter 2.\nIf you want to convert from BINARY(Double) to DECIMAL, enter 3.");
 		int k = keyboard.nextInt();
 		if(k==0)
 		{
 			System.out.println("Please enter DECIMAL:");
-			String i = keyboard.next();
+			String i;
+			i= keyboard.next();
 			d2B(i);
 		}
-		else
+		if(k==1)
 		{
+			System.out.print("Please enter BINARY:\n");
+			String m = keyboard.next();
+			b2D(m);
+		}
+		if(k==2)
+		{
+			doublePrecision=true;
+			System.out.print("Please enter DECIMAL:");
+			String i = keyboard.next();
+			d2B(i);
+			
+		}
+		if(k==3)
+		{
+			doublePrecision=true;
 			System.out.println("Please enter BINARY:");
 			String m = keyboard.next();
 			b2D(m);
@@ -47,7 +65,7 @@ public class Binary {
 				 //calls method to add stacks
 				//calls method to set exponents
 		printFinalStack();//print significand
-		System.out.println("Single Precision :)");
+		System.out.println();
 		
 	}
 	
@@ -84,13 +102,57 @@ public class Binary {
 	//This converts a binary number to an integer
 	{
 		double j=0;
-	    for(int i=0;i<m.length();i++){
-	        if(m.charAt(i)== '1')
-	        {
-	         j=j+ Math.pow(2,m.length()-1-i);
-	        }
-	    }
-	    System.out.println(j);
+		boolean negative=false;
+		String more=m;
+		String ex;
+		
+		double secondPart=0.5;
+		if(m.charAt(0)==49)
+		{
+			System.out.print("-");
+		}
+		if(doublePrecision==false)
+		{
+			ex=m.substring(1,9);
+			//System.out.println(ex);
+			int endOfFirstPartOfString=(int)convertToDecimal(ex)-117;
+			System.out.println(endOfFirstPartOfString);
+			m=m.substring(10,endOfFirstPartOfString);
+			int w=endOfFirstPartOfString;
+			while(w<more.length())
+			{
+				
+				if(more.charAt(w)==49)
+				{
+					secondPart=secondPart+secondPart/2;
+				}
+				else
+				{
+					
+				}
+				w++;
+			}
+		}
+		else
+		{
+			ex=m.substring(1,12);
+			m=m.substring(13,(int)convertToDecimal(ex)-1010);
+		}
+		m="1"+m;
+	    System.out.println(convertToDecimal(m)+secondPart);
+	}
+	private static double convertToDecimal(String m)
+	{
+		double j=0;
+		 for(int i=0;i<m.length();i++)
+		    {
+		        if(m.charAt(i)== '1')
+		        {
+		         j=j+ Math.pow(2,m.length()-1-i);
+		        }
+		    }
+		 //System.out.println(j);
+		 return (int)j ;
 	}
 	
 	private static void addStacks()
@@ -127,10 +189,21 @@ public class Binary {
 			stack3.push(stack2.pop());
 			
 		}
-		while(count<bit23)
+		if(doublePrecision==false)
 		{
-			stack3.push(0);
-			count++;
+			while(count<bit23)
+			{
+				stack3.push(0);
+				count++;
+			}
+		}
+		else
+		{
+			while(count<53)
+			{
+				stack3.push(0);
+				count++;
+			}
 		}
 		while(stack3.size()!=0)
 		{
@@ -149,10 +222,21 @@ public class Binary {
 		{
 			stack3.push(stack1.pop());
 		}
-		while(count<bit23)
+		if(doublePrecision==false)
 		{
-			stack3.push(0);
-			count++;
+			while(count<bit23)
+			{
+				stack3.push(0);
+				count++;
+			}
+		}
+		else
+		{
+			while(count<53)
+			{
+				stack3.push(0);
+				count++;
+			}
 		}
 		while(stack3.size()!=0)
 		{
@@ -175,10 +259,21 @@ public class Binary {
 		{
 			stack3.push(stack2.pop());
 		}
-		while(count<bit23)
+		if(doublePrecision==false)
 		{
-			stack3.push(0);
-			count++;
+			while(count<bit23)
+			{
+				stack3.push(0);
+				count++;
+			}
+		}
+		else
+		{
+			while(count<53)
+			{
+				stack3.push(0);
+				count++;
+			}
 		}
 		while(stack3.size()!=0)
 		{
@@ -215,17 +310,32 @@ public class Binary {
 	//this sets the exponent part of the IEEE 754 string
 	{
 		String s;
-		s = Integer.toBinaryString(exponent+127);
-		if(s.length()<8)
+		if(doublePrecision==false)
 		{
-			s="0"+s;
-			printExponent(s);
+			s = Integer.toBinaryString(exponent+127);
+			if(s.length()<8)
+			{
+				s="0"+s;
+				printExponent(s);
+			}
+			else
+			{
+				printExponent(s);
+			}
 		}
 		else
 		{
-			printExponent(s);
+			s = Integer.toBinaryString(exponent+1023);
+			if(s.length()<8)
+			{
+				s="0"+s;
+				printExponent(s);
+			}
+			else
+			{
+				printExponent(s);
+			}
 		}
-		
 	}
 	private static void printExponent(String s)
 	//prints the exponent part of the string

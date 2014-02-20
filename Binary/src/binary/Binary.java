@@ -32,7 +32,15 @@ public class Binary {
 		{
 			System.out.print("Please enter BINARY:\n");
 			String m = keyboard.next();
-			b2D(m);
+            float deciFinal;
+            String ieee754 = m;
+            if(ieee754.charAt(0)==49)
+            {
+            	System.out.print("-");
+            	ieee754="0"+ieee754.substring(1,ieee754.length());
+            }
+            deciFinal = Float.intBitsToFloat(Integer.parseInt(ieee754, 2));
+            System.out.println(deciFinal);
 		}
 		if(k==2)
 		{
@@ -47,7 +55,16 @@ public class Binary {
 			doublePrecision=true;
 			System.out.println("Please enter BINARY:");
 			String m = keyboard.next();
-			b2D(m);
+			double deciFinal;
+            String ieee754 = m;
+            if(ieee754.charAt(0)==49)
+            {
+            	System.out.print("-");
+            	ieee754="0"+ieee754.substring(1,ieee754.length());
+            }
+            ieee754 = ieee754.trim();
+            deciFinal = Double.longBitsToDouble(Long.parseLong(ieee754,2));
+            System.out.println(deciFinal);
 		}
 	}
 	
@@ -199,7 +216,7 @@ public class Binary {
 		}
 		else
 		{
-			while(count<53)
+			while(count<47)
 			{
 				stack3.push(0);
 				count++;
@@ -232,7 +249,7 @@ public class Binary {
 		}
 		else
 		{
-			while(count<53)
+			while(count<47)
 			{
 				stack3.push(0);
 				count++;
@@ -269,7 +286,7 @@ public class Binary {
 		}
 		else
 		{
-			while(count<53)
+			while(count<47)
 			{
 				stack3.push(0);
 				count++;

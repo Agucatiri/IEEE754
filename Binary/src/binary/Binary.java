@@ -21,10 +21,12 @@ public class Binary {
 				+"If you want to convert from BINARY(Single) to DECIMAL, enter 1.\n"+
 				"If you want to convert from DECIMAL to BINARY(Double) enter 2.\nIf you want to convert from BINARY(Double) to DECIMAL, enter 3.");
 		int k = keyboard.nextInt();
-		if(k==0)
+		
+			if(k==0)
 		{
 			System.out.println("Please enter DECIMAL:");
 			String i;
+			doublePrecision=false;
 			i= keyboard.next();
 			d2B(i);
 		}
@@ -33,6 +35,21 @@ public class Binary {
 			System.out.print("Please enter BINARY:\n");
 			String m = keyboard.next();
             float deciFinal;
+            if(m.equalsIgnoreCase("0/1|11111111|any nonzero significand"))
+            {
+            	System.out.println("NaN");
+            	System.exit(0);
+            }
+            if(m.equalsIgnoreCase("0/1|11111111|00000000000000000000000"))
+            {
+            	System.out.println("Infinity");
+            	System.exit(0);
+            }
+            if(m.equalsIgnoreCase("0/1|00000000|any nonzero significand"))
+            {
+            	System.out.println("Denormalized Number");
+            	System.exit(0);
+            }
             String ieee754 = m;
             if(ieee754.charAt(0)==49)
             {
@@ -55,6 +72,21 @@ public class Binary {
 			doublePrecision=true;
 			System.out.println("Please enter BINARY:");
 			String m = keyboard.next();
+			if(m.equalsIgnoreCase("0/1|11111111111|any nonzero significand"))
+            {
+            	System.out.println("NaN");
+            	System.exit(0);
+            }
+            if(m.equalsIgnoreCase("0/1|11111111111|00000000000000000000000"))
+            {
+            	System.out.println("Infinity");
+            	System.exit(0);
+            }
+            if(m.equalsIgnoreCase("0/1|00000000000|any nonzero significand"))
+            {
+            	System.out.println("Denormalized Number");
+            	System.exit(0);
+            }
 			double deciFinal;
             String ieee754 = m;
             if(ieee754.charAt(0)==49)
@@ -66,6 +98,7 @@ public class Binary {
             deciFinal = Double.longBitsToDouble(Long.parseLong(ieee754,2));
             System.out.println(deciFinal);
 		}
+		
 	}
 	
 	private static void d2B(String i)
@@ -115,49 +148,7 @@ public class Binary {
 		}
 	}
 	
-	private static void b2D(String m)
-	//This converts a binary number to an integer
-	{
-		double j=0;
-		boolean negative=false;
-		String more=m;
-		String ex;
-		
-		double secondPart=0.5;
-		if(m.charAt(0)==49)
-		{
-			System.out.print("-");
-		}
-		if(doublePrecision==false)
-		{
-			ex=m.substring(1,9);
-			//System.out.println(ex);
-			int endOfFirstPartOfString=(int)convertToDecimal(ex)-117;
-			System.out.println(endOfFirstPartOfString);
-			m=m.substring(10,endOfFirstPartOfString);
-			int w=endOfFirstPartOfString;
-			while(w<more.length())
-			{
-				
-				if(more.charAt(w)==49)
-				{
-					secondPart=secondPart+secondPart/2;
-				}
-				else
-				{
-					
-				}
-				w++;
-			}
-		}
-		else
-		{
-			ex=m.substring(1,12);
-			m=m.substring(13,(int)convertToDecimal(ex)-1010);
-		}
-		m="1"+m;
-	    System.out.println(convertToDecimal(m)+secondPart);
-	}
+	
 	private static double convertToDecimal(String m)
 	{
 		double j=0;
@@ -216,7 +207,7 @@ public class Binary {
 		}
 		else
 		{
-			while(count<47)
+			while(count<52)
 			{
 				stack3.push(0);
 				count++;
@@ -249,7 +240,7 @@ public class Binary {
 		}
 		else
 		{
-			while(count<47)
+			while(count<52)
 			{
 				stack3.push(0);
 				count++;
@@ -266,6 +257,10 @@ public class Binary {
 	//to later be printed out to the screen
 	{
 		int count=0;
+		if(doublePrecision==true)
+		{
+			count=stack1.size()+stack2.size();
+		}
 		int bit23=23;
 		bit23=bit23-stack1.size()-stack2.size();
 		while(stack1.size()!=0)
@@ -286,7 +281,7 @@ public class Binary {
 		}
 		else
 		{
-			while(count<47)
+			while(count<52)
 			{
 				stack3.push(0);
 				count++;
@@ -343,7 +338,7 @@ public class Binary {
 		else
 		{
 			s = Integer.toBinaryString(exponent+1023);
-			if(s.length()<8)
+			if(s.length()<11)
 			{
 				s="0"+s;
 				printExponent(s);
